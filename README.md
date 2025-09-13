@@ -1,61 +1,201 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+👇
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🚀 Deployment Report: Filament v3 on Hostinger Shared Hosting (Subdomain)
+1. Initial Setup
 
-## About Laravel
+Objective: Deploy Laravel Filament v3 project to Hostinger shared hosting on a subdomain.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Domain: doc.tekniq-system.online
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Hosting Environment: Hostinger Shared Hosting
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Target Subdomain Root: public_html/doc/public
 
-## Learning Laravel
+2. Errors & Fixes During Deployment
+Error 1: Session Not Working
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Issue: Login form refreshed but did not authenticate.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Cause: Sessions were not being stored properly.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Fix:
 
-## Laravel Sponsors
+Created sessions table:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+php artisan session:table
+php artisan migrate
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Updated .env:
 
-## Contributing
+SESSION_DRIVER=database
+SESSION_DOMAIN=.tekniq-system.online
+SESSION_SECURE_COOKIE=true
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+Corrected folder permissions:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+chmod -R 775 storage bootstrap/cache
 
-## Security Vulnerabilities
+Error 2: .env File Missing or Empty
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Issue: Running php artisan key:generate caused:
 
-## License
+file_get_contents(.env): Failed to open stream: No such file or directory
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Cause: .env file was missing after upload.
+
+Fix:
+
+Created a new .env file in project root:
+
+APP_NAME=Laravel
+APP_ENV=production
+APP_KEY=
+APP_DEBUG=false
+APP_URL=https://doc.tekniq-system.online
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=u259178617_doc
+DB_USERNAME=u259178617_doc
+DB_PASSWORD="4;K6lx[UHk"
+
+SESSION_DRIVER=database
+SESSION_DOMAIN=.tekniq-system.online
+SESSION_SECURE_COOKIE=true
+
+
+Generated new key:
+
+php artisan key:generate
+
+Error 3: Wrong Subdomain Root
+
+Issue: Filament routes returned “Page Not Found”.
+
+Cause: Subdomain was pointing to public_html/doc instead of public_html/doc/public.
+
+Fix: Updated Hostinger subdomain settings → set root directory to public_html/doc/public.
+
+Error 4: Routes Not Working (403 / 404)
+
+Issue: After publishing Filament assets, login/dashboard gave 403 or 404.
+
+Cause: Missing .htaccess rewrite rules.
+
+Fix: Added .htaccess in /public:
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+Error 5: Password Field Visible in Login Form
+
+Issue: Password field wasn’t masked (showed actual characters).
+
+Cause: Incorrect form input type in Filament login page.
+
+Fix: Verified Filament login form (it uses type="password" by default). Issue was due to cached assets.
+
+Cleared caches:
+
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+php artisan optimize:clear
+
+Error 6: Login Still Refreshing (No Redirect to Dashboard)
+
+Issue: Login succeeded but redirected back to login page.
+
+Causes:
+
+Session not persisting due to cookie mismatch.
+
+APP_URL misconfigured.
+
+Fixes:
+
+Set correct APP_URL:
+
+APP_URL=https://doc.tekniq-system.online
+
+
+Ensured database sessions were being written (sessions table checked with php artisan tinker).
+
+Verified session cookie (laravel_session) was stored in browser.
+
+Error 7: “This Page Does Not Exist” After Login
+
+Issue: After login, redirected to dashboard but got error page.
+
+Cause: Wrong UserPanelProvider path.
+
+Fix: In UserPanelProvider.php, set:
+
+->path('/')
+
+
+so dashboard works at /.
+
+3. Final Working Setup
+
+.env File (Final):
+
+APP_NAME=Laravel
+APP_ENV=production
+APP_KEY=base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+APP_DEBUG=false
+APP_URL=https://doc.tekniq-system.online
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=u259178617_doc
+DB_USERNAME=u259178617_doc
+DB_PASSWORD="4;K6lx[UHk"
+
+SESSION_DRIVER=database
+SESSION_LIFETIME=120
+SESSION_DOMAIN=.tekniq-system.online
+SESSION_SECURE_COOKIE=true
+
+
+Hostinger Subdomain Root: public_html/doc/public
+
+Permissions:
+
+chmod -R 775 storage bootstrap/cache
+
+
+Caches Cleared:
+
+php artisan optimize:clear
+
+
+Final Routes:
+
+Login: https://doc.tekniq-system.online/login
+
+Dashboard: https://doc.tekniq-system.online/
+
+4. Lessons Learned
+
+On shared hosting, always point subdomain root to public/.
+
+Sessions are the backbone of Laravel login. If sessions aren’t stored, login will fail silently.
+
+.env file must exist on server — Hostinger doesn’t auto-deploy it.
+
+Permissions matter — without writable storage and bootstrap/cache, Laravel breaks.
+
+APP_URL and SESSION_DOMAIN must match live domain.
+
+✅ After these steps, Filament login and dashboard work perfectly on Hostinger subdomain.
