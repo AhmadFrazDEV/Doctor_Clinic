@@ -25,7 +25,7 @@ class UserPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('user')
-            ->path('/')
+            ->path('/admin')
             ->login()
             ->brandName('Clinic Dashboard')
             ->colors([
