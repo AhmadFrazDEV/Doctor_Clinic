@@ -1,6 +1,19 @@
 <?php return array (
   'livewireComponents' => 
   array (
+    'app.filament.resources.appointment-resource.pages.calendar-appointments' => 'App\\Filament\\Resources\\AppointmentResource\\Pages\\CalendarAppointments',
+    'app.filament.resources.appointment-resource.pages.create-appointment' => 'App\\Filament\\Resources\\AppointmentResource\\Pages\\CreateAppointment',
+    'app.filament.resources.appointment-resource.pages.edit-appointment' => 'App\\Filament\\Resources\\AppointmentResource\\Pages\\EditAppointment',
+    'app.filament.resources.appointment-resource.pages.list-appointments' => 'App\\Filament\\Resources\\AppointmentResource\\Pages\\ListAppointments',
+    'app.filament.resources.clinic-resource.pages.create-clinic' => 'App\\Filament\\Resources\\ClinicResource\\Pages\\CreateClinic',
+    'app.filament.resources.clinic-resource.pages.edit-clinic' => 'App\\Filament\\Resources\\ClinicResource\\Pages\\EditClinic',
+    'app.filament.resources.clinic-resource.pages.list-clinics' => 'App\\Filament\\Resources\\ClinicResource\\Pages\\ListClinics',
+    'app.filament.resources.patient-resource.pages.create-patient' => 'App\\Filament\\Resources\\PatientResource\\Pages\\CreatePatient',
+    'app.filament.resources.patient-resource.pages.edit-patient' => 'App\\Filament\\Resources\\PatientResource\\Pages\\EditPatient',
+    'app.filament.resources.patient-resource.pages.list-patients' => 'App\\Filament\\Resources\\PatientResource\\Pages\\ListPatients',
+    'app.filament.resources.service-resource.pages.create-service' => 'App\\Filament\\Resources\\ServiceResource\\Pages\\CreateService',
+    'app.filament.resources.service-resource.pages.edit-service' => 'App\\Filament\\Resources\\ServiceResource\\Pages\\EditService',
+    'app.filament.resources.service-resource.pages.list-services' => 'App\\Filament\\Resources\\ServiceResource\\Pages\\ListServices',
     'filament.pages.dashboard' => 'Filament\\Pages\\Dashboard',
     'filament.widgets.account-widget' => 'Filament\\Widgets\\AccountWidget',
     'filament.livewire.database-notifications' => 'Filament\\Livewire\\DatabaseNotifications',
@@ -38,6 +51,10 @@
   ),
   'resources' => 
   array (
+    'C:\\Clinic App\\doc\\app\\Filament\\Resources\\AppointmentResource.php' => 'App\\Filament\\Resources\\AppointmentResource',
+    'C:\\Clinic App\\doc\\app\\Filament\\Resources\\ClinicResource.php' => 'App\\Filament\\Resources\\ClinicResource',
+    'C:\\Clinic App\\doc\\app\\Filament\\Resources\\PatientResource.php' => 'App\\Filament\\Resources\\PatientResource',
+    'C:\\Clinic App\\doc\\app\\Filament\\Resources\\ServiceResource.php' => 'App\\Filament\\Resources\\ServiceResource',
   ),
   'resourceDirectories' => 
   array (

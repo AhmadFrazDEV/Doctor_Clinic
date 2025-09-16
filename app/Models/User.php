@@ -33,6 +33,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'clinic_id',
+        'role',
     ];
 
     /**
@@ -54,4 +56,37 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Relationships
+     */
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
+    public function ownedClinics()
+    {
+        return $this->hasMany(Clinic::class, 'owner_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class, 'staff_id');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class, 'staff_id');
+    }
+
+    public function inventoryUpdates()
+    {
+        return $this->hasMany(InventoryItem::class, 'last_updated_by');
+    }
 }
