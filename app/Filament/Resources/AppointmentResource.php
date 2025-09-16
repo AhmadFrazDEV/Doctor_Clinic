@@ -9,10 +9,12 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
+
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 
@@ -27,22 +29,26 @@ class AppointmentResource extends Resource
         return $schema->components([
             Select::make('clinic_id')
                 ->relationship('clinic', 'name')
-                ->required(),
+                ->required()
+                ->searchable(),
 
             Select::make('patient_id')
                 ->relationship('patient', 'first_name')
-                ->required(),
+                ->required()
+                ->searchable(),
 
             Select::make('doctor_id')
                 ->relationship('doctor', 'name')
-                ->required(),
+                ->required()
+                ->searchable(),
 
             Select::make('service_id')
-                ->relationship('service', 'name'),
-                // ->required(),
+                ->relationship('service', 'name')
+                ->searchable(),
 
             DateTimePicker::make('appointment_date')
-                ->required(),
+                ->required()
+                ->default(now()),
 
             Select::make('status')
                 ->options([
@@ -56,7 +62,8 @@ class AppointmentResource extends Resource
 
             Textarea::make('notes')
                 ->rows(3)
-                ->maxLength(65535),
+                ->maxLength(65535)
+                ->placeholder('Enter any additional notes...'),
         ]);
     }
 
@@ -69,7 +76,14 @@ class AppointmentResource extends Resource
                 TextColumn::make('doctor.name')->label('Doctor')->sortable()->searchable(),
                 TextColumn::make('service.name')->label('Service')->sortable()->searchable(),
                 TextColumn::make('appointment_date')->dateTime()->sortable(),
-                TextColumn::make('status')->sortable(),
+                BadgeColumn::make('status')
+                    ->sortable()
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'confirmed',
+                        'primary' => 'completed',
+                        'danger' => 'cancelled',
+                    ]),
                 TextColumn::make('notes')->limit(50),
             ])
             ->filters([

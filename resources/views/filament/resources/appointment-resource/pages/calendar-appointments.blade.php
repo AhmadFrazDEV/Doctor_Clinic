@@ -2,12 +2,17 @@
     <div class="space-y-6">
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold">Appointment Calendar</h1>
-            <a href="{{ url('/admin/resources/appointments/list') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                View List
-            </a>
+            <div class="flex space-x-2">
+                <a href="{{ url('/admin/resources/appointments/create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Create New Appointment
+                </a>
+                <a href="{{ url('/admin/resources/appointments/list') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    View List
+                </a>
+            </div>
         </div>
 
-        <div id="calendar" class="w-full"></div>
+        <div id="calendar" class="w-full bg-white rounded-lg shadow-md p-4" style="height: 700px;"></div>
     </div>
 
     @push('scripts')
@@ -19,14 +24,14 @@
                 initialView: 'dayGridMonth',
                 events: @json($events),
                 eventClick: function(info) {
-                    alert('Appointment: ' + info.event.title + '\nClinic: ' + info.event.extendedProps.clinic + '\nDoctor: ' + info.event.extendedProps.doctor + '\nStatus: ' + info.event.extendedProps.status + '\nNotes: ' + info.event.extendedProps.notes);
+                    window.location.href = '/admin/resources/appointments/' + info.event.id + '/edit';
                 },
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                height: 'auto'
+                height: 650
             });
             calendar.render();
         });

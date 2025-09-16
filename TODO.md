@@ -1,3 +1,1 @@
-- [x] Modify app/Filament/Resources/AppointmentResource.php to set 'index' => Pages\CalendarAppointments::route('/') and 'list' => Pages\ListAppointments::route('/list'), remove 'calendar' key
-- [x] Add a navigation link in calendar-appointments.blade.php to access the list view
-- [x] Test that the calendar displays correctly as the front page
+- [x] on dashboard make these wedgits -> contains Financial Analytical widgets(revenu , expenses and outstanding) Quick stat widgets (Total patients , total appointments , stock alert and pending consents) todays appointments table
